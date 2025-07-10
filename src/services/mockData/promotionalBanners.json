@@ -1,0 +1,58 @@
+[
+  {
+    "Id": 1,
+    "title": "🎉 MEGA SALE!",
+    "description": "Up to 70% off on all fashion items. Limited time offer!",
+    "ctaText": "Shop Now",
+    "ctaLink": "/category/women",
+    "backgroundColor": "bg-primary",
+    "isActive": true,
+    "priority": 1,
+    "startDate": "2024-01-01T00:00:00Z",
+    "endDate": "2024-12-31T23:59:59Z",
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "Id": 2,
+    "title": "✨ New Arrivals",
+    "description": "Discover the latest fashion trends for this season.",
+    "ctaText": "Explore",
+    "ctaLink": "/category/men",
+    "backgroundColor": "bg-accent",
+    "isActive": true,
+    "priority": 2,
+    "startDate": "2024-01-01T00:00:00Z",
+    "endDate": "2024-12-31T23:59:59Z",
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "Id": 3,
+    "title": "🚚 Free Shipping",
+    "description": "Free delivery on orders above $50. No minimum purchase required!",
+    "ctaText": "Learn More",
+    "ctaLink": "/",
+    "backgroundColor": "bg-success",
+    "isActive": true,
+    "priority": 3,
+    "startDate": "2024-01-01T00:00:00Z",
+    "endDate": "2024-12-31T23:59:59Z",
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "Id": 4,
+    "title": "💳 Easy Returns",
+    "description": "30-day hassle-free returns on all purchases. Shop with confidence!",
+    "ctaText": "Shop Now",
+    "ctaLink": "/",
+    "backgroundColor": "bg-info",
+    "isActive": true,
+    "priority": 4,
+    "startDate": "2024-01-01T00:00:00Z",
+    "endDate": "2024-12-31T23:59:59Z",
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z"
+  }
+]

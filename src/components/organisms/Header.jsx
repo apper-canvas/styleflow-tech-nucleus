@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Button from "@/components/atoms/Button";
 import SearchBar from "@/components/molecules/SearchBar";
 import ApperIcon from "@/components/ApperIcon";
+import promotionalBannerService from "@/services/api/promotionalBannerService";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [banners, setBanners] = useState([]);
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 
   const categories = [
@@ -17,8 +21,92 @@ const Header = () => {
     { name: "Home & Living", path: "/category/home" }
   ];
 
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const bannersData = await promotionalBannerService.getAll();
+        setBanners(bannersData);
+      } catch (error) {
+        console.error('Failed to fetch promotional banners:', error);
+      }
+    };
+
+    fetchBanners();
+  }, []);
+
+  useEffect(() => {
+    if (banners.length > 1 && !isHovered) {
+      const interval = setInterval(() => {
+        setCurrentBannerIndex((prev) => (prev + 1) % banners.length);
+      }, 5000);
+
+      return () => clearInterval(interval);
+    }
+  }, [banners.length, isHovered]);
+
+  const handleBannerClick = (index) => {
+    setCurrentBannerIndex(index);
+  };
+
   return (
     <header className="bg-surface shadow-lg sticky top-0 z-50">
+      {/* Promotional Banner Carousel */}
+      {banners.length > 0 && (
+        <div 
+          className="relative overflow-hidden"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <motion.div
+            key={currentBannerIndex}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className={`${banners[currentBannerIndex]?.backgroundColor || 'bg-primary'} text-white py-3 px-4`}
+          >
+            <div className="container mx-auto flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <ApperIcon name="Megaphone" size={20} />
+                <div>
+                  <span className="font-semibold text-sm">
+                    {banners[currentBannerIndex]?.title}
+                  </span>
+                  <span className="ml-2 text-sm opacity-90">
+                    {banners[currentBannerIndex]?.description}
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                {banners[currentBannerIndex]?.ctaText && (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="bg-white text-primary hover:bg-gray-100 px-4 py-1 text-sm font-medium"
+                    onClick={() => navigate(banners[currentBannerIndex]?.ctaLink || '/')}
+                  >
+                    {banners[currentBannerIndex]?.ctaText}
+                  </Button>
+                )}
+                {banners.length > 1 && (
+                  <div className="hidden md:flex items-center gap-2">
+                    {banners.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleBannerClick(index)}
+                        className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                          index === currentBannerIndex
+                            ? 'bg-white'
+                            : 'bg-white/50 hover:bg-white/75'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
