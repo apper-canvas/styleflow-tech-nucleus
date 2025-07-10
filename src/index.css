@@ -77,3 +77,38 @@
 .Toastify__toast--info {
   background-color: #2196F3;
 }
+
+/* Quick View Modal Styles */
+.quick-view-modal {
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .quick-view-modal {
+    position: fixed !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 90vw !important;
+    max-width: 350px !important;
+  }
+}
+
+/* Enhanced backdrop blur */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+/* Modal animation improvements */
+.quick-view-modal .line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Smooth hover transitions for modal buttons */
+.quick-view-modal button:hover {
+  transform: translateY(-1px);
+  transition: transform 0.1s ease;
+}

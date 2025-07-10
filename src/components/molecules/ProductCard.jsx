@@ -5,11 +5,13 @@ import { toast } from "react-toastify";
 import Button from "@/components/atoms/Button";
 import Badge from "@/components/atoms/Badge";
 import ApperIcon from "@/components/ApperIcon";
+import QuickViewModal from "./QuickViewModal";
 import { addToCart, addToWishlist } from "@/services/api/cartService";
-
 const ProductCard = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showQuickView, setShowQuickView] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const discountPercentage = product.discountPrice 
     ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
@@ -50,16 +52,41 @@ const ProductCard = ({ product }) => {
     } catch (error) {
       toast.error("Failed to add to wishlist");
     }
+};
+
+  const handleMouseEnter = (e) => {
+    setIsHovered(true);
+    setMousePosition({ x: e.clientX, y: e.clientY });
+    
+    // Delay showing quick view to prevent accidental triggers
+    setTimeout(() => {
+      if (isHovered) {
+        setShowQuickView(true);
+      }
+    }, 500);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setShowQuickView(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (showQuickView) {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    }
   };
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.2 }}
-      className="product-card group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <>
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.2 }}
+        className="product-card group"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onMouseMove={handleMouseMove}
+      >
       <Link to={`/product/${product.Id}`}>
         <div className="relative overflow-hidden">
           <img
@@ -154,8 +181,17 @@ const ProductCard = ({ product }) => {
             </Button>
           </motion.div>
         </div>
-      </Link>
-    </motion.div>
+</Link>
+      </motion.div>
+      
+      {/* Quick View Modal */}
+      <QuickViewModal
+        product={product}
+        isVisible={showQuickView}
+        onClose={() => setShowQuickView(false)}
+        mousePosition={mousePosition}
+      />
+    </>
   );
 };
 
