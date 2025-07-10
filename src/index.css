@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'react-toastify/dist/ReactToastify.css';
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    color: #282C3F;
+    background-color: #F5F5F6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', system-ui, sans-serif;
+    font-weight: 600;
+  }
+}
+
+@layer components {
+  .shimmer-effect {
+    background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+    background-size: 200px 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-2 rounded-md font-medium transition-all duration-200 hover:bg-opacity-90 hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply border-2 border-secondary text-secondary px-6 py-2 rounded-md font-medium transition-all duration-200 hover:bg-secondary hover:text-white;
+  }
+
+  .product-card {
+    @apply bg-surface rounded-lg shadow-card hover:shadow-card-hover transition-all duration-200 overflow-hidden;
+  }
+
+  .filter-pill {
+    @apply bg-white border border-gray-300 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 hover:bg-gray-50;
+  }
+
+  .filter-pill.active {
+    @apply bg-primary text-white border-primary;
+  }
+}
+
+.Toastify__toast-container {
+  z-index: 9999;
+}
+
+.Toastify__toast {
+  border-radius: 8px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  min-height: 48px;
+}
+
+.Toastify__toast--success {
+  background-color: #20BD99;
+}
+
+.Toastify__toast--error {
+  background-color: #FF5722;
+}
+
+.Toastify__toast--warning {
+  background-color: #FFC107;
+  color: #282C3F;
+}
+
+.Toastify__toast--info {
+  background-color: #2196F3;
+}

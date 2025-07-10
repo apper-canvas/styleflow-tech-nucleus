@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 1,
+    "productId": 1,
+    "quantity": 2,
+    "size": "M",
+    "color": "White",
+    "addedAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "Id": 2,
+    "productId": 3,
+    "quantity": 1,
+    "size": "32",
+    "color": "Blue",
+    "addedAt": "2024-01-15T11:45:00Z"
+  },
+  {
+    "Id": 3,
+    "productId": 9,
+    "quantity": 1,
+    "size": "9",
+    "color": "White",
+    "addedAt": "2024-01-15T14:20:00Z"
+  }
+]
