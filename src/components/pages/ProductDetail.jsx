@@ -5,15 +5,19 @@ import { toast } from "react-toastify";
 import Button from "@/components/atoms/Button";
 import Badge from "@/components/atoms/Badge";
 import Select from "@/components/atoms/Select";
+import StarRating from "@/components/atoms/StarRating";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import ApperIcon from "@/components/ApperIcon";
+import ProductReviews from "@/components/organisms/ProductReviews";
 import { getProductById } from "@/services/api/productService";
 import { addToCart, addToWishlist } from "@/services/api/cartService";
+import { getReviewsSummary } from "@/services/api/reviewService";
 
 const ProductDetail = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
+  const [reviewSummary, setReviewSummary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
@@ -21,16 +25,20 @@ const ProductDetail = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
-
-  const loadProduct = async () => {
+const loadProduct = async () => {
     try {
       setLoading(true);
       setError("");
       
-      const data = await getProductById(parseInt(productId));
-      setProduct(data);
-      setSelectedSize(data.sizes?.[0] || "");
-      setSelectedColor(data.colors?.[0] || "");
+      const [productData, reviewData] = await Promise.all([
+        getProductById(parseInt(productId)),
+        getReviewsSummary(parseInt(productId))
+      ]);
+      
+      setProduct(productData);
+      setReviewSummary(reviewData);
+      setSelectedSize(productData.sizes?.[0] || "");
+      setSelectedColor(productData.colors?.[0] || "");
     } catch (err) {
       setError("Failed to load product details. Please try again.");
     } finally {
@@ -174,13 +182,22 @@ const ProductDetail = () => {
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="space-y-6"
+className="space-y-6"
         >
           <div>
-            <h1 className="text-2xl font-bold text-secondary mb-2">{product.brand}</h1>
+            <div className="flex items-start justify-between mb-2">
+              <h1 className="text-2xl font-bold text-secondary">{product.brand}</h1>
+              {reviewSummary && reviewSummary.totalReviews > 0 && (
+                <div className="flex items-center gap-2">
+                  <StarRating rating={reviewSummary.averageRating} readOnly size={16} />
+                  <span className="text-sm text-gray-600">
+                    ({reviewSummary.totalReviews} review{reviewSummary.totalReviews !== 1 ? 's' : ''})
+                  </span>
+                </div>
+              )}
+            </div>
             <p className="text-gray-600 text-lg">{product.name}</p>
           </div>
-
           <div className="flex items-center gap-4">
             {product.discountPrice ? (
               <>
@@ -309,8 +326,11 @@ const ProductDetail = () => {
               {product.description || "A premium quality product designed for style and comfort. Made with high-quality materials and attention to detail."}
             </p>
           </div>
-        </motion.div>
+</motion.div>
       </div>
+      
+      {/* Product Reviews */}
+      <ProductReviews productId={parseInt(productId)} />
     </div>
   );
 };
